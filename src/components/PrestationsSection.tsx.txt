@@ -1,0 +1,95 @@
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { Building2, UtensilsCrossed, Heart, Hand, Users } from "lucide-react";
+
+const prestations = [
+  {
+    icon: <Building2 className="w-7 h-7" />,
+    title: "Entreprises & Team Building",
+    description:
+      "Séminaires, soirées d'entreprise, lancements de produits. Un spectacle fédérateur qui marque les esprits.",
+    highlight: "Populaire",
+  },
+  {
+    icon: <UtensilsCrossed className="w-7 h-7" />,
+    title: "Restaurants & Bars",
+    description:
+      "Animations de table en table, close-up mentalisme. Transformez vos soirées en moments d'exception.",
+  },
+  {
+    icon: <Heart className="w-7 h-7" />,
+    title: "Mariages & Soirées Privées",
+    description:
+      "Un spectacle élégant et personnalisé qui émerveille vos invités et crée des souvenirs magiques.",
+  },
+  {
+    icon: <Hand className="w-7 h-7" />,
+    title: "Close-up Mentalisme",
+    description:
+      "En proximité, entre les mains de vos invités. Des effets impossibles à quelques centimètres.",
+  },
+  {
+    icon: <Users className="w-7 h-7" />,
+    title: "CSE & Événements Spéciaux",
+    description:
+      "Arbres de Noël, fêtes de fin d'année, événements CSE. Des shows adaptés à tous les publics.",
+  },
+];
+
+const PrestationsSection = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
+  return (
+    <section ref={ref} id="prestations" className="section-padding relative">
+      <div className="max-w-6xl mx-auto">
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+        >
+          <p className="text-primary/70 font-body text-sm tracking-[0.3em] uppercase mb-4">
+            Prestations
+          </p>
+          <h2 className="text-3xl md:text-5xl font-display font-bold text-gradient-gold mb-6">
+            Des Shows Sur-Mesure
+          </h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Chaque événement est unique. Chaque spectacle est conçu pour s'adapter
+            parfaitement à votre occasion.
+          </p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {prestations.map((item, i) => (
+            <motion.div
+              key={item.title}
+              className="glass-card-hover p-8 relative group"
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.1 + i * 0.1 }}
+            >
+              {item.highlight && (
+                <span className="absolute top-4 right-4 text-xs font-body font-semibold tracking-wider uppercase px-3 py-1 rounded-full bg-primary/15 text-primary border border-primary/20">
+                  {item.highlight}
+                </span>
+              )}
+              <div className="text-primary mb-5 transition-transform duration-300 group-hover:scale-110">
+                {item.icon}
+              </div>
+              <h3 className="text-lg font-display font-semibold text-foreground mb-3">
+                {item.title}
+              </h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                {item.description}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default PrestationsSection;

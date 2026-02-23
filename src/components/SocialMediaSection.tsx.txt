@@ -1,0 +1,223 @@
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { Play, Heart, MessageCircle, Share2, Music2, Eye } from "lucide-react";
+
+const socialPosts = [
+  {
+    platform: "TikTok",
+    username: "@hypnonico",
+    caption: "Quand je fais oublier son prénom à un invité 😂🔥 #hypnose #mentalisme",
+    likes: "24.3K",
+    comments: "1.2K",
+    shares: "3.8K",
+    views: "412K",
+    gradient: "from-pink-500 via-red-500 to-yellow-500",
+  },
+  {
+    platform: "Instagram",
+    caption: "Ce moment où toute la salle retient son souffle... ✨ #spectacle #magie",
+    username: "@hypnonico",
+    likes: "8.7K",
+    comments: "342",
+    shares: "1.1K",
+    views: "89K",
+    gradient: "from-purple-500 via-pink-500 to-orange-400",
+  },
+  {
+    platform: "TikTok",
+    username: "@hypnonico",
+    caption: "POV: tu es volontaire sur scène 🧠💫 #transe #hypnoseshow",
+    likes: "52.1K",
+    comments: "3.4K",
+    shares: "8.2K",
+    views: "1.2M",
+    gradient: "from-cyan-400 via-blue-500 to-purple-600",
+  },
+];
+
+const PhoneMockup = ({
+  post,
+  index,
+}: {
+  post: (typeof socialPosts)[0];
+  index: number;
+}) => {
+  const isTikTok = post.platform === "TikTok";
+
+  return (
+    <motion.div
+      className="relative mx-auto"
+      initial={{ opacity: 0, y: 60, rotateY: -10 }}
+      whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.7, delay: index * 0.2 }}
+    >
+      {/* Phone frame */}
+      <div className="relative w-[220px] md:w-[260px] h-[440px] md:h-[520px] rounded-[2.5rem] border-2 border-gold/20 bg-noir-light p-2 shadow-2xl">
+        {/* Glow behind phone */}
+        <div
+          className={`absolute -inset-4 bg-gradient-to-b ${post.gradient} opacity-10 blur-2xl rounded-[3rem] -z-10`}
+        />
+
+        {/* Notch */}
+        <div className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-5 bg-noir rounded-full z-20" />
+
+        {/* Screen */}
+        <div className="relative w-full h-full rounded-[2rem] overflow-hidden bg-noir flex flex-col">
+          {/* Video placeholder with gradient */}
+          <div
+            className={`absolute inset-0 bg-gradient-to-br ${post.gradient} opacity-20`}
+          />
+
+          {/* Center play button */}
+          <div className="flex-1 flex items-center justify-center relative">
+            <motion.div
+              className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20 cursor-pointer"
+              whileHover={{ scale: 1.1 }}
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <Play className="w-7 h-7 text-white fill-white ml-1" />
+            </motion.div>
+          </div>
+
+          {/* Bottom overlay */}
+          <div className="relative z-10 p-4 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+            {/* Username */}
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-gold-dark flex items-center justify-center text-[10px] font-bold text-primary-foreground">
+                HN
+              </div>
+              <span className="text-white text-xs font-semibold">
+                {post.username}
+              </span>
+            </div>
+
+            {/* Caption */}
+            <p className="text-white/90 text-[11px] leading-snug mb-3">
+              {post.caption}
+            </p>
+
+            {/* Stats */}
+            <div className="flex items-center gap-3 text-white/70">
+              <span className="flex items-center gap-1 text-[10px]">
+                <Heart className="w-3 h-3" /> {post.likes}
+              </span>
+              <span className="flex items-center gap-1 text-[10px]">
+                <MessageCircle className="w-3 h-3" /> {post.comments}
+              </span>
+              <span className="flex items-center gap-1 text-[10px]">
+                {isTikTok ? (
+                  <Eye className="w-3 h-3" />
+                ) : (
+                  <Share2 className="w-3 h-3" />
+                )}
+                {isTikTok ? post.views : post.shares}
+              </span>
+            </div>
+          </div>
+
+          {/* TikTok side icons */}
+          {isTikTok && (
+            <div className="absolute right-3 bottom-28 flex flex-col items-center gap-4">
+              {[Heart, MessageCircle, Share2].map((Icon, i) => (
+                <motion.div
+                  key={i}
+                  className="flex flex-col items-center"
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.5 + i * 0.1 }}
+                >
+                  <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
+                    <Icon className="w-4 h-4 text-white" />
+                  </div>
+                </motion.div>
+              ))}
+              <motion.div
+                className="w-8 h-8 rounded-full border-2 border-white overflow-hidden"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+              >
+                <div className="w-full h-full bg-gradient-to-br from-primary to-gold-dark flex items-center justify-center">
+                  <Music2 className="w-3 h-3 text-primary-foreground" />
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Platform label */}
+      <div className="text-center mt-4">
+        <span
+          className={`text-xs font-semibold bg-gradient-to-r ${post.gradient} bg-clip-text text-transparent`}
+        >
+          {post.platform}
+        </span>
+        <p className="text-muted-foreground text-[11px] mt-0.5">
+          {post.views} vues
+        </p>
+      </div>
+    </motion.div>
+  );
+};
+
+const SocialMediaSection = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <section ref={ref} className="section-padding relative overflow-hidden">
+      {/* Ambient glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px]" />
+
+      <div className="relative z-10 max-w-6xl mx-auto">
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+        >
+          <p className="text-primary/70 font-body text-sm tracking-[0.3em] uppercase mb-4">
+            Réseaux Sociaux
+          </p>
+          <h2 className="text-3xl md:text-5xl font-display font-bold text-gradient-gold mb-6">
+            Le Buzz en Ligne
+          </h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
+            Des millions de vues, des milliers de réactions. Découvrez les
+            moments les plus viraux de mes spectacles.
+          </p>
+        </motion.div>
+
+        {/* Phone mockups row */}
+        <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12">
+          {socialPosts.map((post, i) => (
+            <PhoneMockup key={i} post={post} index={i} />
+          ))}
+        </div>
+
+        {/* Follow CTA */}
+        <motion.div
+          className="text-center mt-16"
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.6, delay: 0.8 }}
+        >
+          <a
+            href="https://www.tiktok.com/@hypnonico"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full glass-card border-gold/20 hover:border-gold/40 transition-all duration-300 text-foreground text-sm font-medium"
+          >
+            Suivez l'aventure sur les réseaux
+            <Share2 className="w-4 h-4 text-primary" />
+          </a>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+export default SocialMediaSection;

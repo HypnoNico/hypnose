@@ -1,0 +1,101 @@
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { Star, Quote } from "lucide-react";
+
+const testimonials = [
+  {
+    name: "Sophie M.",
+    role: "Directrice Événementiel",
+    company: "Groupe Accor",
+    text: "HypnoNico a transformé notre soirée d'entreprise en un moment absolument magique. 300 collaborateurs subjugués, debout, en standing ovation. Inoubliable.",
+    rating: 5,
+  },
+  {
+    name: "Pierre D.",
+    role: "Marié",
+    text: "On cherchait quelque chose d'original pour notre mariage. Nico a dépassé toutes nos attentes. Nos invités en parlent encore des mois après !",
+    rating: 5,
+  },
+  {
+    name: "Laurent B.",
+    role: "Président CSE",
+    company: "Airbus",
+    text: "Troisième année consécutive que nous faisons appel à HypnoNico pour notre arbre de Noël. Adultes et enfants adorent. Un professionnel remarquable.",
+    rating: 5,
+  },
+  {
+    name: "Camille R.",
+    role: "Gérante",
+    company: "Le Comptoir Parisien",
+    text: "Depuis que nous organisons des soirées mentalisme, notre restaurant affiche complet chaque vendredi. L'effet HypnoNico est réel !",
+    rating: 5,
+  },
+];
+
+const TestimonialsSection = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
+  return (
+    <section ref={ref} className="section-padding relative overflow-hidden">
+      <div className="absolute inset-0 hero-gradient opacity-40" />
+
+      <div className="relative z-10 max-w-6xl mx-auto">
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+        >
+          <p className="text-primary/70 font-body text-sm tracking-[0.3em] uppercase mb-4">
+            Témoignages
+          </p>
+          <h2 className="text-3xl md:text-5xl font-display font-bold text-gradient-gold mb-6">
+            Ils Ont Vécu l'Expérience
+          </h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {testimonials.map((t, i) => (
+            <motion.div
+              key={t.name}
+              className="glass-card-hover p-8 relative"
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.1 + i * 0.1 }}
+            >
+              <Quote className="w-8 h-8 text-primary/20 absolute top-6 right-6" />
+
+              <div className="flex gap-1 mb-4">
+                {[...Array(t.rating)].map((_, j) => (
+                  <Star
+                    key={j}
+                    className="w-4 h-4 fill-primary text-primary"
+                  />
+                ))}
+              </div>
+
+              <p className="text-foreground/90 leading-relaxed mb-6 italic font-body text-sm">
+                "{t.text}"
+              </p>
+
+              <div>
+                <p className="font-display font-semibold text-foreground">
+                  {t.name}
+                </p>
+                <p className="text-muted-foreground text-sm">
+                  {t.role}
+                  {t.company && (
+                    <span className="text-primary/60"> — {t.company}</span>
+                  )}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default TestimonialsSection;
